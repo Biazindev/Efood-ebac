@@ -13,7 +13,7 @@ export const GlobalCss = createGlobalStyle`
         font-family: Roboto, sans-serif;
         list-style: none;
         background-color: #FFF8F2;
-
+    }
         .container {
             max-width: 1024px;
             width: 100%;
