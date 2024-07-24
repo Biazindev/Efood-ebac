@@ -46,4 +46,10 @@ export const Card = styled.div`
         font-weight: bold;
         color: ${cores.rosaClaro};
     }
+
+    > img{
+        width: 304px;
+        height: 167px;
+        object-fit: cover;
+    }
 `

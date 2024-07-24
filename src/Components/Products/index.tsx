@@ -1,36 +1,45 @@
-import estrela from '../../assets/estrela.svg'
-import { ButtonLink } from '../Button/styles'
-import Tag from '../Tag'
-import { Assessments, Border, Card, Container, Highlights, List, Titulo } from './styles'
+import estrela from '../../assets/estrela.svg';
+import { ButtonLink } from '../Button/styles';
+import Tag from '../Tag';
+import { Assessments, Border, Card, Highlights, List, Titulo } from './styles';
+import { Restaurant } from '../pages/Home';
 
-type Props = {
-  title: string
-  score: number
-  description: string
-  culture: string
-  highlight: string
-  image: string
+type ListProps = {
+  foods: Restaurant[]
 }
-
-const Products = ({ title, score, description, culture, highlight, image }: Props) => (
+const getDescricao = (descricao: string) => {
+  if (descricao.length > 250) {
+      return descricao.slice(0, 247) + '...'
+  }
+  return descricao
+}
+const Products = ({ foods }: ListProps) => {
+  return (
     <List>
-    <Card>
-      <img src={image} alt={title} />
-      <Highlights>
-      {highlight && <Tag className="highlight-tag">{highlight}</Tag>}
-        <Tag>{culture}</Tag>
-      </Highlights>
-      <Border>
-        <Assessments>
-          <Titulo>{title}</Titulo>
-          <span>{score}</span>
-          <img src={estrela} title='estrela' />
-        </Assessments>
-        <p>{description}</p>
-        <ButtonLink type="link" to="/apresentacao">Saiba mais</ButtonLink>
-      </Border>
-    </Card>
+      {foods.map(food => (
+        <Card key={food.id}>
+          <img 
+            src={food.capa || 'fallback-image-url'} 
+            alt="Imagem do restaurante" 
+            onError={(e) => e.currentTarget.src = 'fallback-image-url'} 
+          />
+          <Highlights>
+            {food.destacado && <Tag className="destacado-tag" size="big">Destaque da semana</Tag>}
+            <Tag size="small">{food.tipo}</Tag>
+          </Highlights>
+          <Border>
+            <Assessments>
+              <Titulo>{food.titulo}</Titulo>
+              <span>{food.avaliacao}</span>
+              <img src={estrela} title='estrela' alt="Estrela de avaliação" />
+            </Assessments>
+            <p>{getDescricao(food.descricao)}</p>
+            <ButtonLink type="link" to="/apresentacao">Saiba mais</ButtonLink>
+          </Border>
+        </Card>
+      ))}
     </List>
-)
+  )
+}
 
 export default Products;

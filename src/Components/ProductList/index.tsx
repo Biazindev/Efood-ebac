@@ -1,21 +1,26 @@
 import { ButtonContainer } from '../Button/styles'
-import Food from '../models/food'
+import { CardapioItem } from '../pages/Categories'
 import { Card, Container, List } from './styles'
 
 type ProductListProps = {
-  items: Omit<Food, 'culture' | 'highlight' | 'score'>[]
+  foods: CardapioItem[]
 }
-
-const ProductList = ({ items }: ProductListProps) => (
+const getDescricao = (descricao: string) => {
+  if (descricao.length > 150) {
+      return descricao.slice(0, 147) + '...'
+  }
+  return descricao
+}
+const ProductList = ({ foods }: ProductListProps) => (
   <Container>
-    {items.map(item => (
-      <List>
-        <Card key={item.id}>
-        <img src={item.image} alt='pizza' />
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
-        <ButtonContainer>Adicionar ao carrinho</ButtonContainer>
-      </Card>
+    {foods.map((food) => (
+      <List key={food.id}>
+        <Card>
+          <img src={food.foto} alt={food.nome} />
+          <h3>{food.nome}</h3>
+          <p>{getDescricao(food.descricao)}</p>
+          <ButtonContainer>Adicionar ao carrinho</ButtonContainer>
+        </Card>
       </List>
     ))}
   </Container>

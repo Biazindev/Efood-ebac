@@ -32,6 +32,11 @@ export const Card = styled.div`
         color: ${cores.rosa};
         background-color: #FFFFFF;
     }
+        > img {
+        width: 472px;
+        height: 217px;
+        object-fit: cover; 
+        }
 `
 
 export const Titulo = styled.h3`
@@ -65,6 +70,7 @@ export const Assessments = styled.div`
     img { 
     background-color: #FFFFFF;
     margin-left: 8px;
+    object-fit: cover;
     }
     
     span {

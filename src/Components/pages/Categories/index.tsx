@@ -1,52 +1,38 @@
-import pizza from '../../../assets/pizza.png'
-import Food from "../../models/food"
 import Presentation from "../../Presentation"
 import ProductList from "../../ProductList"
+import { useEffect, useState } from "react"
+import {  Restaurant } from "../Home"
 
-const perfil: Omit<Food, 'culture' | 'highlight' | 'score'>[] = [
-  {
-    id: 1,
-    title: 'Pizza Marguerita',
-    image: pizza,
-    description: 'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-  },
-  {
-    id: 1,
-    title: 'Pizza Marguerita',
-    image: pizza,
-    description: 'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-  },
-  {
-    id: 1,
-    title: 'Pizza Marguerita',
-    image: pizza,
-    description: 'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-  },
-  {
-    id: 1,
-    title: 'Pizza Marguerita',
-    image: pizza,
-    description: 'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-  },
-  {
-    id: 1,
-    title: 'Pizza Marguerita',
-    image: pizza,
-    description: 'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-  },
-  {
-    id: 1,
-    title: 'Pizza Marguerita',
-    image: pizza,
-    description: 'A clássica Marguerita: molho de tomate suculento, mussarela derretida, manjericão fresco e um toque de azeite. Sabor e simplicidade!',
-  }
-]
 
-const Categories = () => (
-  <>
-    <Presentation />
-    <ProductList items={perfil} />
-  </>
-)
+export interface CardapioItem {
+  foto: string;
+  preco: number;
+  id: number;
+  nome: string;
+  descricao: string;
+  porcao: string;
+}
+
+const Categories = () => {
+  const [foods, setFoods] = useState<CardapioItem[]>([])
+
+  useEffect(() => {
+    fetch('https://fake-api-tau.vercel.app/api/efood/restaurantes')
+      .then(res => res.json())
+      .then((data: Restaurant[]) => {
+        if (data.length > 0) {
+          setFoods(data[0].cardapio)
+        }
+      })
+      .catch(err => console.error("Falha ao buscar dados", err))
+  }, [])
+
+  return (
+    <>
+      <Presentation />
+      <ProductList foods={foods} />
+    </>
+  )
+}
 
 export default Categories
