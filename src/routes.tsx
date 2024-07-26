@@ -23,7 +23,7 @@ export function Conteudo() {
         </Routes>
       </div>
       <Routes>
-          <Route path="/apresentacao" element={<Categories />} />
+          <Route path={"/apresentacao/:id"} element={<Categories />} />
       </Routes>
     </>
   )

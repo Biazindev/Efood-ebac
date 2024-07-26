@@ -34,8 +34,8 @@ const Products = ({ foods }: ListProps) => {
               <img src={estrela} title='estrela' alt="Estrela de avaliação" />
             </Assessments>
             <p>{getDescricao(food.descricao)}</p>
-            <ButtonLink type="link" to="/apresentacao">Saiba mais</ButtonLink>
-          </Border>
+            <ButtonLink type="link" to={`apresentacao/${food.id}`}>Saiba mais</ButtonLink>
+          </Border>                 
         </Card>
       ))}
     </List>

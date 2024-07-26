@@ -7,6 +7,8 @@ export const Container = styled.div`
     margin-top: -23px;
     background-color: transparent;
     align-items: center;
+    
+    
 
     img {
         width: 100%;
@@ -74,7 +76,6 @@ export const OverlayText = styled.div`
     top: 50%;
     justify-content: start;
     flex-direction: column;
-
     p { 
         color: #FFFFFF;
         font-size: 32px;
@@ -105,46 +106,4 @@ export const Modal = styled.div`
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
-`
-
-export const ModalContent = styled.div`
-    max-width: 960px;
-    width: 100%;
-    background-color: black;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 0 16px;
-    position: relative;
-
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-    }
-
-    .image-container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 16px;
-        
-    > img {
-        width: 100%;
-    }
-
-    img,
-    iframe {
-        max-width: 100%;
-        
-        height: auto;
-    }
-        iframe {
-        width: 100%;
-        height: 480px;
-        }
-    }
-
-    
 `
