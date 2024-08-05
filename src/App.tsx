@@ -1,15 +1,21 @@
 import { BrowserRouter } from "react-router-dom"
-import { GlobalCss } from "./styles"
-import Footer from "./Components/Footer"
 import { Conteudo } from "./routes"
+import { Provider } from "react-redux"
+
+import { store } from "./Components/store"
+import Footer from "./Components/Footer"
+
+import { GlobalCss } from "./styles"
 
 function App() {
   return (
-    <BrowserRouter>
-      <GlobalCss />
-      <Conteudo />
-      <Footer />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <GlobalCss />
+        <Conteudo />
+        <Footer />
+      </BrowserRouter>
+    </Provider>
   )
 }
 

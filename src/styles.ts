@@ -12,7 +12,6 @@ export const GlobalCss = createGlobalStyle`
         box-sizing: border-box;
         font-family: Roboto, sans-serif;
         list-style: none;
-        background-color: #FFF8F2;
     }
         .container {
             max-width: 1024px;

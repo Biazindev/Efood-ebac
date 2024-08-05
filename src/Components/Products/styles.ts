@@ -6,7 +6,6 @@ export const Container = styled.div`
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    brackground-color: ${cores.rosa};
 }
 `
 export const List = styled.div`

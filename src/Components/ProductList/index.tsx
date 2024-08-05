@@ -1,10 +1,15 @@
 import { useState } from 'react'
-import { ButtonContainer } from '../Button/styles'
-import { CardapioItem } from '../pages/Categories'
-import * as S from './styles'
+import { useDispatch } from 'react-redux'
+
+import { add, open } from '../store/reducers/cart'
 import close from '../../assets/close 1.png'
 
-type ProductListProps = {
+import { ButtonContainer } from '../Button/styles'
+import * as S from './styles'
+import Cart from '../Cart'
+
+
+type Props = {
   foods: CardapioItem[]
 }
 
@@ -22,17 +27,12 @@ export const formataPreco = (preco = 0) => {
   }).format(preco)
 }
 
-interface ModalState {
-  preco: number
-  isVisible: boolean
-  type: string
-  url: string
-  descricao: string
-  nome: string
-  porcao: string
-}
+const ProductList = ({ foods }: Props) => {
+  const dispatch = useDispatch()
+  const openCart = () => {
+    dispatch(open())
+  }
 
-const ProductList = ({ foods }: ProductListProps) => {
   const [modal, setModal] = useState<ModalState>({
     isVisible: false,
     type: 'image',
@@ -40,6 +40,7 @@ const ProductList = ({ foods }: ProductListProps) => {
     descricao: '',
     nome: '',
     porcao: '',
+    id: 0,
     preco: 0
   })
 
@@ -51,7 +52,8 @@ const ProductList = ({ foods }: ProductListProps) => {
       descricao: food.descricao,
       nome: food.nome,
       porcao: food.porcao,
-      preco: food.preco
+      preco: food.preco,
+      id: food.id
     })
   }
 
@@ -63,12 +65,33 @@ const ProductList = ({ foods }: ProductListProps) => {
       descricao: '',
       nome: '',
       porcao: '',
+      id: 0,
       preco: 0
     })
   }
 
+  const addToCart = () => {
+    const itemToAdd: CardapioItem = {
+      id: modal.id,
+      titulo: modal.nome,
+      foto: modal.url,
+      descricao: modal.descricao,
+      porcao: modal.porcao,
+      preco: modal.preco,
+      nome: ''
+    }
+    dispatch(add(itemToAdd))
+    dispatch(open())
+  }
+
+  const carrinhoVenda = () => {
+    addToCart()
+    openCart()
+  }
+
   return (
-    <S.Container>
+    <div>
+      <S.Container>
       {foods.map((food) => (
         <S.List key={food.id} onClick={() => openModal(food)}>
           <S.Card>
@@ -97,15 +120,20 @@ const ProductList = ({ foods }: ProductListProps) => {
               )}
             </div>
             <S.Descricao>
-            <p className='titulo'>{modal.nome}</p>
-            <p>{modal.descricao}</p>
-            <p>{`Serve: de ${modal.porcao}`}</p>
-            <ButtonContainer className='text'>{`Adicionar ao carrinho - ${formataPreco((modal.preco))}`}</ButtonContainer>
+              <p className='titulo'>{modal.nome}</p>
+              <p>{modal.descricao}</p>
+              <p>{`Serve: de ${modal.porcao}`}</p>
+              <ButtonContainer 
+                onClick={carrinhoVenda}
+                className='text'
+              >{`Adicionar ao carrinho - ${formataPreco((modal.preco))}`}</ButtonContainer>
             </S.Descricao>
           </S.ModalContent>
         </S.Modal>
       )}
     </S.Container>
+    <Cart />
+    </div>
   )
 }
 

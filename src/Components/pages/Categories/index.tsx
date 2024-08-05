@@ -1,43 +1,22 @@
-import Presentation from "../../Presentation";
-import ProductList from "../../ProductList";
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
 
-export interface CardapioItem {
-  titulo: string;
-  foto: string;
-  preco: number;
-  id: number;
-  nome: string;
-  descricao: string;
-  porcao: string;
-}
+import Presentation from "../../Presentation"
+import ProductList from "../../ProductList"
 
-export interface Restaurant {
-  foto: string;
-  id: number;
-  titulo: string;
-  destacado: boolean;
-  tipo: string;
-  avaliacao: number;
-  descricao: string;
-  capa: string;
-  cardapio: CardapioItem[];
-}
 
 const Categories = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [selectedCardapio, setSelectedCardapio] = useState<CardapioItem[]>([]);
-  const { id } = useParams<{ id?: string }>(); // ID pode ser undefined
-
+  const { id } = useParams<{ id?: string }>()
   useEffect(() => {
     const fetchData = async () => {
       try {
         const fetchRestaurant = async (id: number) => {
-          const res = await fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`);
-          const data: Restaurant = await res.json();
-          return data;
-        };
+          const res = await fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
+          const data: Restaurant = await res.json()
+          return data
+        }
 
         const allRestaurants = await Promise.all([
           fetchRestaurant(1),
@@ -48,26 +27,26 @@ const Categories = () => {
           fetchRestaurant(6),
         ]);
 
-        setRestaurants(allRestaurants);
+        setRestaurants(allRestaurants)
 
         if (id) {
-          const selectedId = parseInt(id, 10);
-          const selectedRestaurant = allRestaurants.find(restaurant => restaurant.id === selectedId);
+          const selectedId = parseInt(id, 10)
+          const selectedRestaurant = allRestaurants.find(restaurant => restaurant.id === selectedId)
           if (selectedRestaurant) {
-            setSelectedCardapio(selectedRestaurant.cardapio);
+            setSelectedCardapio(selectedRestaurant.cardapio)
           } else {
-            setSelectedCardapio([]);
+            setSelectedCardapio([])
           }
         }
       } catch (err) {
-        console.error("Falha ao buscar dados", err);
+        console.error("Falha ao buscar dados", err)
       }
-    };
+    }
 
-    fetchData();
+    fetchData()
   }, [id])
 
-  const currentRestaurant = restaurants.find(restaurant => restaurant.id === parseInt(id || '0', 10));
+  const currentRestaurant = restaurants.find(restaurant => restaurant.id === parseInt(id || '0', 10))
 
   return (
     <>
@@ -78,7 +57,7 @@ const Categories = () => {
         <p>Restaurante não encontrado ou sem cardápio.</p>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Categories;
+export default Categories

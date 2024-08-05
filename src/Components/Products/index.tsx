@@ -1,8 +1,7 @@
-import estrela from '../../assets/estrela.svg';
-import { ButtonLink } from '../Button/styles';
-import Tag from '../Tag';
-import { Assessments, Border, Card, Highlights, List, Titulo } from './styles';
-import { Restaurant } from '../pages/Home';
+import estrela from '../../assets/estrela.svg'
+import { ButtonLink } from '../Button/styles'
+import Tag from '../Tag'
+import { Assessments, Border, Card, Highlights, List, Titulo } from './styles'
 
 type ListProps = {
   foods: Restaurant[]
@@ -42,4 +41,4 @@ const Products = ({ foods }: ListProps) => {
   )
 }
 
-export default Products;
+export default Products

@@ -2,6 +2,7 @@ import logo from '../../assets/logo.svg'
 import instagram from '../../assets/instagram.svg'
 import face from '../../assets/face.svg'
 import x from '../../assets/x.svg'
+
 import { Container, Icons } from './styles'
 
 const Footer = () => (
