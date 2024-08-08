@@ -50,7 +50,7 @@ const Categories = () => {
 
   return (
     <>
-      <Presentation food={currentRestaurant || { titulo: '', tipo: '' } } />
+      <Presentation food={currentRestaurant || { titulo: '', tipo: '', capa: '' } } />
       {selectedCardapio.length > 0 ? (
         <ProductList foods={selectedCardapio} />
       ) : (

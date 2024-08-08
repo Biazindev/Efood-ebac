@@ -63,6 +63,11 @@ export const ImageContainer = styled.div`
     position: relative;
     width: 100%;
     background: transparent !important;
+
+    img {
+    height: 280px;
+    object-fit: cover;
+    }
 `;
 
 export const OverlayText = styled.div`

@@ -1,4 +1,4 @@
-import { useDispatch,  useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import { RootReducer } from "../store"
 import { open } from '../store/reducers/cart'
@@ -14,38 +14,40 @@ type Props = {
   food: {
     titulo: string
     tipo: string
+    capa: string 
   }
 }
 
 const Presentation = ({ food }: Props) => {
-const dispatch = useDispatch()
-const { items } = useSelector((state: RootReducer) => state.cart)
+  const dispatch = useDispatch()
+  const { items } = useSelector((state: RootReducer) => state.cart)
 
-const openCart = () => {
+  const openCart = () => {
     dispatch(open())
-}
+  }
+
   return (
     <div>
-    <Container>
-      <BackgroundImg src={fundo} alt="background" />
-      <LinkCart>
-        <h3>Restaurantes</h3>
-        <span onClick={openCart}>{items.length} produto(s) no carrinho</span>
-      </LinkCart>
-      <ImageContainer>
-        <img className="img-edit" src={apresentacao} alt="entrada" />
-      </ImageContainer>
+      <Container>
+        <BackgroundImg src={fundo} alt="background" /> 
+        <LinkCart>
+          <h3>Restaurantes</h3>
+          <span onClick={openCart}>{items.length} produto(s) no carrinho</span>
+        </LinkCart>
+        <ImageContainer>
+          <img className="img-edit" src={food.capa} alt="entrada" />
+        </ImageContainer>
+        <div className="container">
+          <OverlayText>
+            <p className="align">{food.tipo}</p>
+            <p><span>{food.titulo}</span></p>
+          </OverlayText>
+        </div>
+      </Container>
       <div className="container">
-        <OverlayText>
-          <p className="align">{food.tipo}</p>
-          <p><span>{food.titulo}</span></p>
-        </OverlayText>
+        <Logo><img src={logo} alt="logo" /></Logo>
       </div>
-    </Container>
-    <div className="container">
-      <Logo><img src={logo} alt="logo" /></Logo>
     </div>
-  </div>
   )
 }
 

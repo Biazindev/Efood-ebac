@@ -10,14 +10,14 @@ const Rotas = () => (
   </Routes>
 );
 
-
 export function Conteudo() {
-  const location = useLocation();
+  const location = useLocation()
   const motraHeader = !location.pathname.includes("apresentacao")
+
 
   return (
     <>
-      {motraHeader && <Header foods={[]} />}
+      {motraHeader && <Header/>}
       <div className="container">
         <Routes>
           <Route path="/*" element={<Rotas />} />
