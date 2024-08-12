@@ -134,12 +134,11 @@ export const Delivery = styled.form`
     max-width: 360px;
     width: 100%;
     
-    > div {
+    > form {
         background-color: ${cores.rosa};
         display: grid;
         max-width: 344px;
         width: 100%;
-
         ${ButtonContainer} {
             position: relative;
             top: 24px;
@@ -159,6 +158,25 @@ export const Delivery = styled.form`
             background-color: ${cores.rosaClaro};
             border: none;
             line-height: 32px;
+
+            &.error {
+            border: 4px solid red;
+            }
+        }
+    }
+
+    div {
+     p,
+        label,
+        span {
+            margin: 8px 0 8px;
+            background-color: ${cores.rosa};
+            color: ${cores.rosaClaro};
+            margin-top: 24px;
+            ${ButtonContainer} {
+            position: relative;
+            top: -40px;
+            }
         }
     }
 
@@ -282,6 +300,7 @@ export const SideBarFinish = styled.aside`
 export const Style = styled.p`
     font-size: 14px;
     font-weight: 400;
+    
 `
 
 export const SideBarPayment = styled.aside`

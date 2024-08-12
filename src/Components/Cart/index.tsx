@@ -31,35 +31,40 @@ const Cart = () => {
       description: '',
       city: '',
       zipCode: '',
-      numberAddress: 1,
+      numberAddress: '',
       number: '',
       complement: '',
       name: '',
-      code: 1,
+      code: '',
       month: '',
       year: '',
     },
     validationSchema: Yup.object({
+      receiver: Yup.string()
+        .min(5, 'O nome precisa ter pelo menos 5 caracteres')
+        .required('O campo nome é obrigatório'),
       name: Yup.string()
         .min(5, 'O nome precisa ter pelo menos 5 caracteres')
         .required('O campo nome é obrigatório'),
-      receiver: Yup.string()
-        .min(5, 'O nome do recebedor precisa ter pelo menos 5 caracteres')
-        .required('O campo nome é obrigatório'),
-      code: Yup.number()
-        .min(100, 'CVV obrigatóriamente tem 3 números')
-        .max(999, 'CVV obrigatóriamente tem 3 números')
+      code: Yup.string()
+        .matches(/^\d{3}$/, 'CVV obrigatoriamente tem 3 números')
         .required('O campo CVV é obrigatório'),
-      month: Yup.string().required('O campo mês é obrigatório'),
-      year: Yup.string().required('O campo ano é obrigatório'),
-      zipCode: Yup.string().required('O campo CEP é obrigatório'),
-      number: Yup.string().required('O campo número é obrigatório'),
+      month: Yup.string()
+        .matches(/^\d{2}$/, 'Digite mês com 2 dígitos')
+        .required('O campo mês é obrigatório'),
+      year: Yup.string()
+        .matches(/^\d{4}$/, 'Digite ano com 4 dígitos')
+        .required('O campo ano é obrigatório'),
+      zipCode: Yup.string()
+        .matches(/^\d{5}-\d{3}$/, 'CEP inválido')
+        .required('O campo CEP é obrigatório'),
+      number: Yup.string()
+        .matches(/^\d{4}-\d{4}-\d{4}-\d{4}$/, 'Número do cartão inválido')
+        .required('O campo número é obrigatório'),
       city: Yup.string().required('O campo cidade é obrigatório'),
+      description: Yup.string().required('O campo endereço é obrigatório'),
+      numberAddress: Yup.string().required('O campo número é obrigatório')
     }),
-    validateOnChange: true,
-    validateOnBlur: true,
-    validateOnMount: true,
-    enableReinitialize: true,
     onSubmit: (values) => {
       const orderData = {
         products: [
@@ -74,7 +79,7 @@ const Cart = () => {
             description: values.description,
             city: values.city,
             zipCode: values.zipCode,
-            numberAddress: values.numberAddress,
+            numberAddress: Number(values.numberAddress),
             complement: values.complement,
           },
         },
@@ -82,7 +87,7 @@ const Cart = () => {
           card: {
             name: values.name,
             number: values.number,
-            code: values.code,
+            code: Number(values.code),
             expires: {
               month: Number(values.month),
               year: Number(values.year),
@@ -102,6 +107,7 @@ const Cart = () => {
         })
     },
   })
+  
 
   const closeDisplay = () => {
     dispatch(close())
@@ -146,6 +152,22 @@ const Cart = () => {
     dispatch(remove(id))
   }
 
+  const checkInputAsError = (fieldName: string) => {
+    const isTouched = fieldName in form.touched
+    const isInvalid = fieldName in form.errors
+    const asError = isTouched && isInvalid
+    return asError
+}
+
+const isButtonDisabled = () => {
+  return !form.isValid || !form.values.receiver || !form.values.description || !form.values.city || !form.values.zipCode || !form.values.numberAddress 
+}
+
+const isButtonDisabledEnd = () => {
+  return !form.isValid || !form.dirty || form.isSubmitting || !form.values.name || !form.values.number || !form.values.code || !form.values.month || !form.values.year
+ 
+}
+
   return (
     <>
       <S.CartContainer className={isOpen ? 'is-open' : ''}>
@@ -173,12 +195,14 @@ const Cart = () => {
         </S.SideBar>
         <S.SideBarAdress className={isDeliveryOpen ? 'is-open' : 'is-close'}>
           <S.Delivery>
-            <div>
+            <form onSubmit={form.handleSubmit}>
               <p>Entrega</p>
               <label>Quem irá receber</label>
               <input
+                className={checkInputAsError("receiver") ? 'error' : '' }
                 value={form.values.receiver}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
                 name="receiver"
                 type="text"
               />
@@ -186,15 +210,19 @@ const Cart = () => {
               <input
                 value={form.values.description}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
                 name="description"
                 type="text"
+                className={checkInputAsError("description") ? 'error' : '' }
               />
               <label>Cidade</label>
               <input
                 value={form.values.city}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
                 name="city"
                 type="text"
+                className={checkInputAsError("city") ? 'error' : '' }
               />
               <div>
                 <S.LabelItem>
@@ -205,16 +233,19 @@ const Cart = () => {
                   <InputMask
                     value={form.values.zipCode}
                     onChange={form.handleChange}
+                    onBlur={form.handleBlur}
                     name="zipCode"
                     type="text"
                     mask='99999-999'
+                    className={checkInputAsError("zipCode") ? 'error' : '' }
                   />
                   <input
                     value={form.values.numberAddress}
                     onChange={form.handleChange}
-                    name="number"
-                    className="space"
-                    type="text"
+                    onBlur={form.handleBlur}
+                    name='numberAddress'
+                    type='text'
+                    className={checkInputAsError("numberAddress") ? 'error' : 'space' }
                   />
                 </S.InputItem>
               </div>
@@ -222,26 +253,30 @@ const Cart = () => {
               <input
                 value={form.values.complement}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
                 name="complement"
                 type="text"
+                className={checkInputAsError("complement") ? 'error' : '' }
               />
               <ButtonContainer type='submit' onClick={continueToPayment}>Continuar com o pagamento</ButtonContainer>
-              <ButtonContainer type='submit' onClick={sale}>
+              <ButtonContainer  type='submit' onClick={sale}>
                 Voltar para o carrinho
               </ButtonContainer>
-            </div>
+            </form>
           </S.Delivery>
         </S.SideBarAdress>
         <S.SideBarInfo className={isPaymentOpen ? 'is-open' : 'is-close'}>
           <S.Delivery>
-            <div>
+            <form>
               <p>Pagamento - Valor a pagar {formataPreco(getTotalPrice())}</p>
               <label>Nome no cartão</label>
               <input
                 value={form.values.name}
                 onChange={form.handleChange}
+                onBlur={form.handleBlur}
                 name="name"
                 type="text"
+                className={checkInputAsError("name") ? 'error' : '' }
               />
               <div>
                 <S.LabelItem>
@@ -252,18 +287,20 @@ const Cart = () => {
                   <InputMask
                     value={form.values.number}
                     onChange={form.handleChange}
+                    onBlur={form.handleBlur}
                     name="number"
-                    className="spaceCard"
                     type="text"
                     mask='9999-9999-9999-9999'
+                    className={checkInputAsError("number") ? 'error' : 'spaceCard' }
                   />
                   <InputMask
                     value={form.values.code}
                     onChange={form.handleChange}
+                    onBlur={form.handleBlur}
                     name="code"
-                    className="spaceCode"
                     type="text"
                     mask='999'
+                    className={checkInputAsError("code") ? 'error' : 'spaceCode' }
                   />
                 </S.InputItem>
               </div>
@@ -276,23 +313,26 @@ const Cart = () => {
                   <InputMask
                     value={form.values.month}
                     onChange={form.handleChange}
+                    onBlur={form.handleBlur}
                     name="month"
                     type="text"
                     mask='99'
+                    className={checkInputAsError("month") ? 'error' : '' }
                   />
                   <InputMask
                     value={form.values.year}
                     onChange={form.handleChange}
+                    onBlur={form.handleBlur}
                     name="year"
-                    className="space"
                     type="text"
                     mask='9999'
+                    className={checkInputAsError("year") ? 'error' : 'space' }
                   />
                 </S.InputItemVencimento>
-                <ButtonContainer type='submit' onClick={completeSale}>Finalizar pagamento</ButtonContainer>
+                <ButtonContainer type='submit' onClick={completeSale} disabled={isButtonDisabledEnd()} >Finalizar pagamento</ButtonContainer>
                 <ButtonContainer type='submit' onClick={backToAddress}>Voltar para o endereço</ButtonContainer>
               </div>
-            </div>
+            </form>
           </S.Delivery>
         </S.SideBarInfo>
         <S.SideBarFinish className={isFinish ? 'is-open' : 'is-close'}>
